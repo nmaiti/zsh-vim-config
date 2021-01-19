@@ -1,0 +1,10 @@
+vim-workspace	workspace.txt	/*vim-workspace*
+workspace-autosave	workspace.txt	/*workspace-autosave*
+workspace-autosave-ignorelist	workspace.txt	/*workspace-autosave-ignorelist*
+workspace-contents	workspace.txt	/*workspace-contents*
+workspace-hidden-buffers	workspace.txt	/*workspace-hidden-buffers*
+workspace-omni-completion	workspace.txt	/*workspace-omni-completion*
+workspace-sessions	workspace.txt	/*workspace-sessions*
+workspace-undo-history	workspace.txt	/*workspace-undo-history*
+workspace-untrailing-spaces	workspace.txt	/*workspace-untrailing-spaces*
+workspace.txt	workspace.txt	/*workspace.txt*
