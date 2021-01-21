@@ -29,59 +29,32 @@ Included Plugins
 ========
 
  * pathogen
-
  * CCTree
-
  * a_vim
-
  * ack.vim
-
  * ctrlp.vim
-
  * fugitive
-
  * indentLine
-
  * jay
-
  * nerdtree
-
  * python-mode
-
  * syntax
-
  * tabular
-
  * tagbar
-
  * vim-autoformat
-
  * vim-bufferline
-
  * vim-clang-format
-
  * vim-colors-solarized
-
  * vim-easymotion
-
  * vim-gitgutter
-
  * vim-github-colorscheme
-
  * vim-go
-
  * vim-linux-coding-style
-
  * vim-markdown-preview
-
  * vim-pasta
-
  * vim-powerline
-
  * vim-syntax-extra
-
  * vim-trailing-whitespace
-
  * vim-workspace
 
 Key mapping
@@ -99,7 +72,7 @@ Please using <tab>+<tab> to move cursor around view windows*
 > | Remove unwanted spaces                                       | `, + rs`                                                        |
 > | Remove last search highlight (visual + insert + command mode) | `<ctrl> + h`                                                 |
 > | Quit window(s)                                               | `,x` to quit current window Or `,X` to remove ALL windows without saving |
-> | Quick Save                                                   | `,s`save windows Or `, + ss`-create session workspace and start autosave                                             |
+> | Quick Save                                                   | `,s`save windows Or `, + ss`create/remove session workspace and start autosave                                             |
 > | ***Code Management***                                        |                                                              |
 > | Clang Formatting of full code (or selected code in visual mode) , vim-clang-format.vim (use .clang-format file if present) | `, + cf`                                                       |
 > | Ctrlp                                                        | `<ctrl> + p`for ctrlp mixed; `<ctrl>+b` for ctrlP buffer     |
@@ -126,5 +99,14 @@ Please using <tab>+<tab> to move cursor around view windows*
 > |                                                              |                                                              |
 >
 
-
+Yaml Fold Keypmapping
+======================
+```
+zi          -   switch folding on or off
+za          -   toggle current fold open/closed
+zc          -   close current fold
+zR          -   open all folds
+zM          -   close all folds
+zv          -   expand folds to reveal cursor
+```
 

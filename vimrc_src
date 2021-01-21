@@ -36,6 +36,7 @@ autocmd FileType javascript,html,css,php,yaml set ts=2
 autocmd FileType javascript,html,css,php,yaml set sts=2
 autocmd FileType javascript,css,php set textwidth=0
 autocmd FileType html,htm,xml,tpl,yaml set textwidth=0
+autocmd FileType yaml setlocal expandtab
 
 "------------------------------------------------------------------------------
 "  Look and feel
