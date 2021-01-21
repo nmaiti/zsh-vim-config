@@ -66,6 +66,14 @@ endif
 filetype plugin indent off
 
 set mouse=a
+"------------------------------------------------------------------------------
+" vim autosave workspace
+let g:workspace_autosave_always = 1
+nnoremap <leader>ss :ToggleWorkspace<CR>
+let g:workspace_session_name = '.session.vim'
+let g:workspace_autosave_ignore = ['gitcommit', 'qf', 'nerdtree', 'tagbar']"
+let g:workspace_autosave = 1
+set sessionoptions-=blank
 
 "------------------------------------------------------------------------------
 "---  Force termial 256 color
@@ -117,9 +125,9 @@ let g:cpp_experimental_template_highlight = 1
 if has("autocmd")
     " When editing a file, always jump to the last cursor position
     autocmd BufReadPost *
-    \ if line("'\"") > 0 && line ("'\"") <= line("$") |
-    \   exe "normal g'\"" |
-    \ endif
+                \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+                \   exe "normal g'\"" |
+                \ endif
 endif
 
 "------------------------------------------------------------------------------
@@ -143,12 +151,12 @@ set cursorline
 syntax on             "  Enable syntax
 set scrolloff=3       "  number of screen lines to show around the cursor
 set linebreak         "  For lines longer than the window, wrap intelligently.
-                      "  This doesn't insert hard line breaks.
+"  This doesn't insert hard line breaks.
 set showbreak=?\ \    "  string to put before wrapped screen lines
 set sidescrolloff=2   "  min # of columns to keep left/right of cursor
 set display+=lastline "  show last line, even if it doesn't fit in the window
 set cmdheight=3       "  # of lines for the command window
-                      "  cmdheight=2 helps avoid 'Press ENTER...' prompts
+"  cmdheight=2 helps avoid 'Press ENTER...' prompts
 
 set number            "  show line numbers
 
@@ -159,7 +167,7 @@ set number            "  show line numbers
 set showcmd "  In the status bar, show incomplete commands as they are typed
 set ruler   "  Always display the current cursor position in the Status Bar
 set confirm "  Ask to save buffer instead of failing when executing
-            "  commands which close buffers
+"  commands which close buffers
 
 "------------------------------------------------------------------------------
 "  editing text
@@ -167,15 +175,15 @@ set confirm "  Ask to save buffer instead of failing when executing
 set backspace=indent,eol,start  "backspace over everything
 if v:version > 703 || v:version == 703 && has("patch541")
     set formatoptions+=j     "delete comment char on second line when
-                             "  joining two commented lines
+    "  joining two commented lines
 endif
 set showmatch                "  when inserting a bracket, briefly jump to its
-                             "  match
+"  match
 set nojoinspaces             "  Use only one space after '.' when joining
-                             "  lines, instead of two
+"  lines, instead of two
 
 set nrformats-=octal         "  don't treat numbers with leading zeros as octal
-                             "  when incrementing / decrementing
+"  when incrementing / decrementing
 
 
 "------------------------------------------------------------------------------
@@ -204,7 +212,7 @@ set wildignore+=*.exe,*.swp,.DS_Store
 set wildmenu
 " Add guard around 'wildignorecase' to prevent terminal vim error
 if exists('&wildignorecase')
-set wildignorecase
+    set wildignorecase
 endif
 
 "------------------------------------------------------------------------------
@@ -239,7 +247,9 @@ nmap <leader>bp :bprev<CR>
 "------------------------------------------------------------------------------
 map <C-Left> <Esc>:tabprev<CR>
 map <C-Right> <Esc>:tabnext<CR>
-map <C-n> <Esc>:tabnew<CR>
+
+map <leader>tn <Esc>:tabnew<CR>
+"map <C-n> <Esc>:tabnew<CR>
 "same as window close
 "map <C-w>c <Esc>:tabclose<CR>
 
@@ -345,7 +355,7 @@ cnoreabbrev Ack Ack!
 nnoremap <Leader>ac :Ack!<Space>
 " Ack word under the cursor
 noremap <Leader>aw :Ack! <C-R>=expand("<cword>")<CR><CR>
-
+noremap <Leader>af :AckFile <space>
 "------------------------------------------------------------------------------
 " Git Gutter
 "------------------------------------------------------------------------------
@@ -402,8 +412,6 @@ map <F6> :!cscope -bR<CR>:cs reset<CR>:!ctags -R --c++-kinds=+p --fields=+iaS --
 " Easy Motion
 "------------------------------------------------------------------------------
 map <leader>a <leader><leader>w
-
-let g:workspace_autosave_always = 1
 
 "------------------------------------------------------------------------------
 " python--mode
@@ -483,6 +491,11 @@ autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
 "------------------------------------------------------------------------------
 " vim-autoformat
 map <leader>fa :Autoformat<CR>
+
+"------------------------------------------------------------------------------
+" linux coding style formating
+let g:linuxsty_patterns = [ "/usr/src/", "/linux" ]
+nnoremap <silent> <leader>lx :LinuxCodingStyle<cr>
 
 "------------------------------------------------------------------------------
 " Ominicppcomplete

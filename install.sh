@@ -25,7 +25,7 @@ else
         echo ' ******* Debian/Ubuntu detected **********'
         sudo apt-get update
         sudo apt-get install exuberant-ctags cscope git zsh clang-format \
-            silversearcher-ag sudo apt-get install fonts-powerline -y
+            silversearcher-ag fonts-powerline -y
     else
         echo ' ******* Redhat/Centos detected **********'
         sudo yum install -y ctags
@@ -43,6 +43,7 @@ fi
 if [[ ! -d ~/.zshrc ]];then
     cp $(pwd)/zshrc_src ~/.zshrc
     sed -i "s/XYZZ/$USER/g" ~/.zshrc
+    chsh -s $(which zsh)
 fi
 
 if [[ -e ~/.vimrc ]]; then
