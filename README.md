@@ -10,7 +10,8 @@ Snapshot
 
 Features
 ========
- * Default colorschema is jay
+ * zsh + ohmyzsh is included with auto suggestion
+ * Default colorschema is jay for vim
  * vim-syntax-extra is added for more granular vim syntax highlighting
  * Kept powerline to remove cursor lag in airline
 
