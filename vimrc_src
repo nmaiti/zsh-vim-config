@@ -41,6 +41,7 @@ autocmd FileType yaml setlocal expandtab
 "------------------------------------------------------------------------------
 "  Look and feel
 "------------------------------------------------------------------------------
+set t_Co=1024
 if has('gui_running')
     " close The toolbar when use gVim
     " close the scrollbar when use gVim
@@ -63,9 +64,24 @@ if has('gui_running')
     nnoremap yy yy"+yy
 endif
 
+if &term =~ "xterm"
+    " 256 colors
+    let &t_Co = 256
+    " restore screen after quitting
+    let &t_ti = "\<Esc>7\<Esc>[r\<Esc>[?47h"
+    let &t_te = "\<Esc>[?47l\<Esc>8"
+    if has("terminfo")
+        let &t_Sf = "\<Esc>[3%p1%dm"
+        let &t_Sb = "\<Esc>[4%p1%dm"
+    else
+        let &t_Sf = "\<Esc>[3%dm"
+        let &t_Sb = "\<Esc>[4%dm"
+    endif
+endif
 
 filetype plugin indent off
 
+set ttymouse=xterm2
 set mouse=a
 "------------------------------------------------------------------------------
 " vim autosave workspace
@@ -88,7 +104,6 @@ else
     set background=dark
 endif
 colorscheme jay "srcery
-
 "colorscheme solarized "Dark delek
 "let g:solarized_termcolors = 256
 "let g:solarized_termtrans = 1
@@ -100,13 +115,6 @@ colorscheme jay "srcery
 "------------------------------------------------------------------------------
 " syntax, highlighting and spelling
 "------------------------------------------------------------------------------
-"------------- color column at 80th letter ------------------------------------
-if exists('+colorcolumn')
-    set colorcolumn=80    " display a line in column 80 to show you
-    " where to line break.
-    highlight ColorColumn ctermbg=6
-endif
-
 "---------------  Powerline settings ------------------------------------------
 let g:Powerline_symbols = 'fancy'
 set encoding=utf-8
@@ -121,6 +129,15 @@ let g:cpp_member_variable_highlight = 1
 let g:cpp_class_decl_highlight = 1
 let g:cpp_posix_standard = 1
 let g:cpp_experimental_template_highlight = 1
+
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
 
 "---------   Open Last Edit Position  -----------------------------------------
 if has("autocmd")
@@ -160,7 +177,16 @@ set cmdheight=3       "  # of lines for the command window
 "  cmdheight=2 helps avoid 'Press ENTER...' prompts
 
 set number            "  show line numbers
+"------------- color column at 80th letter ------------------------------------
+if exists('+colorcolumn')
+    set colorcolumn=80    " display a line in column 80 to show you
+    " where to line break.
+    highlight ColorColumn ctermbg=darkred ctermfg=lightblue
+    highlight Search ctermbg=darkgrey ctermfg=lightgreen
+endif
 
+
+"NBMhighlight Search ctermbg=darkgrey ctermfg=lightgreen
 "------------------------------------------------------------------------------
 " messages and info
 "------------------------------------------------------------------------------
@@ -216,28 +242,62 @@ if exists('&wildignorecase')
     set wildignorecase
 endif
 
+" Copy to system clipboard
+func! GetSelectedText()
+    normal gv"xy
+    let result = getreg("x")
+    return result
+endfunc
+" copy line ,cv ; cut line ,ct ; relative path ,cr ; absolute path ,ca
+if !has("clipboard") && executable("clip.exe") " For wsl
+    map ,cp :call system('clip.exe', GetSelectedText())<CR>
+    map ,ct :call system('clip.exe', GetSelectedText())<CR>gvx
+    map ,cr :call system('clip.exe', expand("%"))<CR>
+    map ,ca :call system('clip.exe', expand("%:p"))<CR>
+else
+    map ,cp :let @* =GetSelectedText()<CR>
+    map ,ct :let @* =GetSelectedText()<CR>
+    map ,cr :let @* =expand("%")<CR>
+    map ,ca :let @* =expand("%:p")<CR>
+endif
+
 "------------------------------------------------------------------------------
 " Window Management
 "------------------------------------------------------------------------------
 " Use left, right, up, down arrow to modify windows size.
-nmap <leader><LEFT> <C-W><
-nmap <leader><RIGHT> <C-W>>
-nmap <leader><UP> <C-W>+
-nmap <leader><DOWN> <C-W>-
+"nmap <leader><LEFT> :<C-W>< <CR>
+"nmap <leader><RIGHT> <C-W>>
+"nmap <leader><UP> <C-W>+
+"nmap <leader><DOWN> <C-W>-
+noremap <silent> <C-S-LEFT> :vertical resize +1<CR>
+noremap <silent> <C-S-RIGHT> :vertical resize -1<CR>
+noremap <silent> <C-S-UP> :res +1 <CR>
+noremap <silent> <C-S-DOWN> :res -1<CR>
+
 
 " bind Ctrl+<movement> keys to move around the windows,
 " instead of using Ctrl+w + <movement>
 map <tab><tab> <C-w>w
-map <c-j> <c-w>j
-map <c-k> <c-w>k
-map <c-l> <c-w>l
-map <c-h> <c-w>h
-
+map <tab><LEFT> <C-w>h
+map <tab><RIGHT> <C-w>l
+map <tab><UP> <C-w>k
+map <tab><DOWN> <C-w>j
+map <tab><DOWN> <C-w>j
+" for bottom-right and top-left movement
+map <tab>> <C-w>b
+map <tab>< <C-w>t
+"map <c-j> <c-w>j
+"map <c-k> <c-w>k
+"map <c-l> <c-w>l
+"map <c-h> <c-w>h
+"
 " easier moving between tabs
 set hidden
 " switch  between buffer move /also can be used by CtrlP
 nmap <leader>bn :bnext<CR>
 nmap <leader>bp :bprev<CR>
+vmap <leader>bn :bnext<CR>
+vmap <leader>bp :bprev<CR>
 "imap <C-t> <Esc>:tabnew<CR>
 "map <leader>n <esc>:tabprevious<CR>
 "map <leader>m <esc>:tabnext<CR>
