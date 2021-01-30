@@ -13,8 +13,10 @@
 "  Leader Key
 "------------------------------------------------------------------------------
 let mapleader=","       " leader is comma
-set encoding=utf-8
-set guifont=DejaVu\ Sans\ Mono\ 10
+set encoding=utf8
+"set guifont=DejaVu\ Sans\ Mono\ 10
+"""""set guifont=Hack\ 10
+"set guifont=DroidSansMono\ Nerd\ Font\ 11
 set pastetoggle=<F10>
 
 if has("mac") || has("macunix")
@@ -22,6 +24,7 @@ if has("mac") || has("macunix")
     set backspace=indent,eol,start
 endif
 
+""""set guifont=Hack\ 10
 " Init pathogen
 call pathogen#infect()
 call pathogen#helptags()
@@ -96,7 +99,7 @@ set sessionoptions-=blank
 "---  Force termial 256 color
 "------------------------------------------------------------------------------
 set t_Co=256
-set term=xterm-256color
+ set term=xterm-256color
 "colorscheme github "solarized delek
 if has('gui_running')
     set background=light
@@ -398,6 +401,13 @@ set wildignore+=*/coverage/*
 set wildignore+=*.testrepository/*
 set wildignore+=*.git/*
 set wildignore+=*.ropeproject/*
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = 'csope.out, tags'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
 let g:ctrlp_working_path_mode = 2
 
 " set default ctrlp to ctrlpMixed
@@ -447,9 +457,12 @@ imap <leader>nt <esc>:NERDTreeToggle<cr>
 
 autocmd vimenter * if !argc() | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+"let g:NERDTreeGitStatusUseNerdFonts = 1
 " Uncomment following to use auto refresh/else use 'R' command while focus on
 " NERDTree window
 " autocmd BufWritePost * NERDTreeFocus | execute 'normal R' | wincmd p
+
 "------------------------------------------------------------------------------
 " CCTree
 "------------------------------------------------------------------------------
