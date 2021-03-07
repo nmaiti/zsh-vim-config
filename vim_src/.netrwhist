@@ -1,7 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
-let g:netrw_dirhist_1='/home/nabendu/playground/LFY_Qemu_tutorial/qemu/dtc/scripts'
-let g:netrw_dirhist_2='/home/nabendu/.vim'
-let g:netrw_dirhist_3='/home/nabendu/playground/ESP_develop/homie-server/app/js/homie/devices'
-let g:netrw_dirhist_4='/home/nabendu/playground/ESP_develop/homie-server/lib'
-let g:netrw_dirhist_5='/home/nabendu/playground/ESP_develop/homie-server/app/js/homie/devices'

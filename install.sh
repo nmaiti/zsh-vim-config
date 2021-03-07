@@ -12,7 +12,7 @@
 #
 # Created By : Nabendu
 # Email : 1206581+nmaiti@users.noreply.github.com
-###################################################################
+####################################################################
 
 if [ `uname` == 'Darwin' ]; then
     echo ' ******* Mac detected ******* '
@@ -23,9 +23,20 @@ else
 
     if [ $is_debian == 0 ]; then
         echo ' ******* Debian/Ubuntu detected **********'
+        sudo add-apt-repository ppa:jonathonf/vim
         sudo apt-get update
         sudo apt-get install exuberant-ctags cscope git zsh clang-format \
-            silversearcher-ag fonts-powerline -y
+            fonts-powerline -y
+        sudo apt install vim-gtk3 vim-nox fzf -y
+
+       UBUNTU_CODE=$(cat /etc/os-release | grep "UBUNTU_CODENAME" | cut -d'=' -f 2)
+
+        if [ $UBUNTU_CODE == "focal" ]; then
+            sudo apt install ripgrep -y
+        else
+            sudo apt install silversearcher-ag -y
+        fi
+
     else
         echo ' ******* Redhat/Centos detected **********'
         sudo yum install -y ctags
@@ -44,7 +55,7 @@ fi
 if [[ ! -d ~/.zshrc ]];then
     cp $(pwd)/zshrc_src ~/.zshrc
     sed -i "s/XYZZ/$USER/g" ~/.zshrc
-    chsh -s $(which zsh)
+    sudo chsh -s $(which zsh)
 fi
 
 if [[ -e ~/.vimrc ]]; then
@@ -58,8 +69,13 @@ if [[ -d ~/.vim ]]; then
 fi
 
 if [[ ! -d ~/.vimrc ]];then
-    ln -s $(pwd)/vimrc_src ~/.vimrc
-    ln -s $(pwd)/vim_src ~/.vim
+    cp $(pwd)/vimrc_src ~/.vimrc
+
+    mkdir ~/.vim
+    cp -rf $(pwd)/vim_src/headers ~/.vim/
+
+#    ln -s $(pwd)/vimrc_src ~/.vimrc
+#    ln -s $(pwd)/vim_src ~/.vim
     echo '#########################'
     echo 'install finished.'
     echo 'If you want to install vim-go, Please install golang first,'
