@@ -8,7 +8,7 @@
 # Args :
 #
 # Creation Date : 02-01-2021
-# Last Modified :
+# Last Modified : 14-03-21 04:28:55S
 #
 # Created By : Nabendu
 # Email : 1206581+nmaiti@users.noreply.github.com
@@ -21,18 +21,26 @@ else
     which apt-get 2>/dev/null
     is_debian=$?
 
+    #  Wsl version need update in dns resolution file
+    if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
+        echo "This is WSL modifying /etc/wsl.conf & /etc/resolv.conf"
+        echo $'[network]\ngenerateResolvConf = false' > /etc/wsl.conf
+        echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+    else
+        echo "This is not WSL"
+    fi
+
     if [ $is_debian == 0 ]; then
         echo ' ******* Debian/Ubuntu detected **********'
         sudo add-apt-repository ppa:jonathonf/vim
         sudo apt-get update
         sudo apt-get install exuberant-ctags cscope git zsh clang-format \
-            fonts-powerline -y
-        sudo apt install vim-gtk3 vim-nox fzf -y
+            fonts-powerline vim-gtk3 vim-nox -y
 
-       UBUNTU_CODE=$(cat /etc/os-release | grep "UBUNTU_CODENAME" | cut -d'=' -f 2)
+        UBUNTU_CODE=$(cat /etc/os-release | grep "UBUNTU_CODENAME" | cut -d'=' -f 2)
 
         if [ $UBUNTU_CODE == "focal" ]; then
-            sudo apt install ripgrep -y
+            sudo apt install fzf ripgrep -y
         else
             sudo apt install silversearcher-ag -y
         fi
@@ -76,17 +84,12 @@ if [[ ! -d ~/.vimrc ]];then
 
 #    ln -s $(pwd)/vimrc_src ~/.vimrc
 #    ln -s $(pwd)/vim_src ~/.vim
-    echo '#########################'
-    echo 'install finished.'
-    echo 'If you want to install vim-go, Please install golang first,'
-    echo 'then running: go get -u github.com/jstemmer/gotags'
-    exit 0
+echo '#########################'
+echo 'install finished.'
+echo 'If you want to install vim-go, Please install golang first,'
+echo 'then running: go get -u github.com/jstemmer/gotags'
+exit 0
 else
     echo '~/vimrc does not exist'
     exit 0
 fi
-
-
-
-
-

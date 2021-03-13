@@ -4,7 +4,7 @@
 " Description : vimrc config file
 "
 " Creation Date : 16-01-2021
-" Last Modified :
+" Last Modified : 14-03-2021 [4:30am]
 "
 " Created By : Nabendu Maiti
 " Email : 1206581+nmaiti@users.noreply.github.com
@@ -44,7 +44,6 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 call plug#begin('~/.vim/plugged')
-Plug 'chazy/cscope_maps'
 Plug 'josuegaleas/jay'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Lokaltog/vim-powerline'
@@ -59,6 +58,7 @@ Plug 'mileszs/ack.vim'
 Plug 'hari-rangarajan/CCTree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'nmaiti/fzf_cscope.vim'
 
 "Alignment
 Plug 'godlygeek/tabular'
@@ -129,7 +129,6 @@ Plug 'tpope/vim-surround' " type ysks' to wrap the word with '' or type cs'`
 Plug 'godlygeek/tabular' " type ;Tabularize /= to align the =
 Plug 'gcmt/wildfire.vim' " in Visual mode, type i' to select all text in '',
 "or type i) i] i} ip
-Plug 'scrooloose/nerdcommenter' " in <space>cc to comment a line
 
 " Dependencies
 Plug 'MarcWeber/vim-addon-mw-utils'
