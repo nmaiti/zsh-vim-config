@@ -8,7 +8,7 @@
 # Args :
 #
 # Creation Date : 02-01-2021
-# Last Modified : 14-03-21 04:28:55S
+# Last Modified : 16-03-21 04:02:36S
 #
 # Created By : Nabendu
 # Email : 1206581+nmaiti@users.noreply.github.com
@@ -42,6 +42,8 @@ else
         if [ $UBUNTU_CODE == "focal" ]; then
             sudo apt install fzf ripgrep -y
         else
+            git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+            ~/.fzf/install
             sudo apt install silversearcher-ag -y
         fi
 
