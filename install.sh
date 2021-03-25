@@ -8,7 +8,7 @@
 # Args :
 #
 # Creation Date : 02-01-2021
-# Last Modified : 16-03-21 04:02:36S
+# Last Modified : 25-03-21 15:10:48S
 #
 # Created By : Nabendu
 # Email : 1206581+nmaiti@users.noreply.github.com
@@ -32,14 +32,18 @@ else
 
     if [ $is_debian == 0 ]; then
         echo ' ******* Debian/Ubuntu detected **********'
+        UBUNTU_CODE=$(cat /etc/os-release | grep "UBUNTU_CODENAME" | cut -d'=' -f 2)
+        DEBIAN_ID=$(cat /etc/os-release | grep "VERSION_ID" | cut -d'=' -f 2)
+        echo $DEBIAN_ID
+        if [[ $DEBIAN_ID == '"10.5"' ]]; then
+            sudo apt install software-properties-common
+        fi
         sudo add-apt-repository ppa:jonathonf/vim
         sudo apt-get update
         sudo apt-get install exuberant-ctags cscope git zsh clang-format \
             fonts-powerline vim-gtk3 vim-nox -y
 
-        UBUNTU_CODE=$(cat /etc/os-release | grep "UBUNTU_CODENAME" | cut -d'=' -f 2)
-
-        if [ $UBUNTU_CODE == "focal" ]; then
+        if [[ $UBUNTU_CODE == "focal" ]] || [[ $DEBIAN_ID == '"10.5"' ]]; then
             sudo apt install fzf ripgrep -y
         else
             git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
