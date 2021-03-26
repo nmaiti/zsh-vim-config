@@ -44,35 +44,54 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 call plug#begin('~/.vim/plugged')
+
+"------------------------------------------------------------------------------
+"" syntax, highlighting and spelling
+"------------------------------------------------------------------------------
 Plug 'josuegaleas/jay'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Lokaltog/vim-powerline'
 Plug 'justinmk/vim-syntax-extra'
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'pedrohdz/vim-yaml-folds'
 Plug 'Yggdroot/indentLine'
 Plug 'vim-scripts/a.vim'
-
-Plug 'mileszs/ack.vim'
+Plug 'pedrohdz/vim-yaml-folds', { 'for': 'yaml' }
 
 Plug 'hari-rangarajan/CCTree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'nmaiti/fzf_cscope.vim'
 
+if !executable('fzf')
+    Plug 'mileszs/ack.vim'
+endif
+
+
 "Alignment
-Plug 'godlygeek/tabular'
+"type ;Tabularize /= to align the =
+Plug 'godlygeek/tabular', { 'on' : 'Tabularize' }
 
 " File navigation
 Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
-Plug 'Chiel92/vim-autoformat'
+Plug 'Chiel92/vim-autoformat', { 'on': 'Autoformat' }
 Plug 'bling/vim-bufferline'
 
 " Taglist
 Plug 'majutsushi/tagbar'
 ", { 'on': 'TagbarOpenAutoClose' }
+
+" Git
+""NBMPlug 'rhysd/conflict-marker.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+"""""if has('nvim') || has('patch-8.0.902')
+"""""    Plug 'mhinz/vim-signify'
+"""""else
+"""""    Plug 'mhinz/vim-signify', { 'branch': 'legacy' }
+"""""endif
+
 
 " Error checking
 Plug 'w0rp/ale'
@@ -81,27 +100,17 @@ Plug 'w0rp/ale'
 """" Plug 'ycm-core/YouCompleteMe'
 
 " Undo Tree
-Plug 'mbbill/undotree'
+Plug 'mbbill/undotree', { 'on': ['UndotreeToggle', 'UndotreeShow'] }
 
 " Other visual enhancement
 ""Plug 'nathanaelkane/vim-indent-guides'
 ""Plug 'itchyny/vim-cursorword'
 
-" Git
-Plug 'rhysd/conflict-marker.vim'
-Plug 'tpope/vim-fugitive'
-"""""if has('nvim') || has('patch-8.0.902')
-"""""    Plug 'mhinz/vim-signify'
-"""""else
-"""""    Plug 'mhinz/vim-signify', { 'branch': 'legacy' }
-"""""endif
-Plug 'airblade/vim-gitgutter'
-
 Plug 'gisphm/vim-gitignore', { 'for': ['gitignore', 'vim-plug'] }
 
 " HTML, CSS, JavaScript, PHP, JSON, etc.
-Plug 'elzr/vim-json'
-Plug 'hail2u/vim-css3-syntax'
+Plug 'elzr/vim-json', { 'for': ['yaml', 'json'] }
+Plug 'hail2u/vim-css3-syntax', { 'for': ['vim-plug', 'php', 'html','javascript', 'css', 'less'] }
 Plug 'spf13/PIV', { 'for' :['php', 'vim-plug'] }
 Plug 'gko/vim-coloresque', { 'for': ['vim-plug', 'php', 'html','javascript', 'css', 'less'] }
 Plug 'pangloss/vim-javascript', { 'for' :['javascript', 'vim-plug'] }
@@ -116,17 +125,18 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " Markdown
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install_sync()}, 'for' :['markdown', 'vim-plug'] }
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
-Plug 'vimwiki/vimwiki'
+Plug 'vimwiki/vimwiki', { 'on' : 'Vimwiki' }
 
 " Bookmarks
-Plug 'kshenoy/vim-signature'
+"Plug 'kshenoy/vim-signature'
 
 " Other useful utilities
 Plug 'terryma/vim-multiple-cursors'
-Plug 'junegunn/goyo.vim' " distraction free writing mode
+" distraction free writing mode
+Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+autocmd! User goyo.vim echom 'Goyo is now loaded!'
 Plug 'tpope/vim-surround' " type ysks' to wrap the word with '' or type cs'`
 "to change 'word' to `word`
-Plug 'godlygeek/tabular' " type ;Tabularize /= to align the =
 Plug 'gcmt/wildfire.vim' " in Visual mode, type i' to select all text in '',
 "or type i) i] i} ip
 
@@ -135,8 +145,9 @@ Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'kana/vim-textobj-user'
 Plug 'fadein/vim-FIGlet'
 
+" Misc
 Plug 'thaerkh/vim-workspace'
-Plug 'voldikss/vim-floaterm'
+Plug 'voldikss/vim-floaterm', { 'on' : ['FloatermToggle', 'FloatermNew'] }
 call plug#end()
 
 "------------------------------------------------------------------------------
@@ -254,7 +265,7 @@ let g:cpp_experimental_template_highlight = 1
 "---------   Open Last Edit Position  -----------------------------------------
 if has("autocmd")
     " When editing a file, always jump to the last cursor position
-    autocmd BufReadPost * \
+    autocmd BufReadPost *
                 \ if line("'\"") > 0 && line ("'\"") <= line("$") |
                 \   exe "normal g'\"" |
                 \ endif
@@ -424,7 +435,7 @@ map <C-Right> <Esc>:tabnext<CR>
 map <leader>tn <Esc>:tabnew<CR>
 "map <C-n> <Esc>:tabnew<CR>
 "same as window close
-"map <C-w>c <Esc>:tabclose<CR>
+map <leader><leader>x <Esc>:tabclose<CR>
 
 
 " easier moving of code blocks
@@ -515,29 +526,35 @@ let g:fzf_preview_window = ['right:50%', 'ctrl-/']
 map <c-p> :Files<CR>
 map <c-b> :Buffers<CR>
 
+if executable('ag')
+    "use silversearcher if available
+    let g:ackprg = 'ag --vimgrep'
+endif
 
 if executable('rg')
-    map <c-a> :Rg<CR>
+    let g:ackprg = 'rg --vimgrep --no-heading'
+endif
+
+if !executable('fzf') "fzf not installed use ack.vim
+    cnoreabbrev Ack Ack!
+    " Ack word under the cursor
+    noremap <Leader>aw :Ack! <C-R>=expand("<cword>")<CR><CR>
+    noremap <Leader>af :AckFile <space>
+    nnoremap <Leader>ac :Ack!<Space>
+else
     nnoremap <Leader>ac :Files<CR>
-    noremap <Leader>aw :Rg <C-R>=expand("<cword>")<CR><CR>
-    "Find c expression under cursor
-    noremap <Leader>af :Rg <C-R>=expand("<cexpr>")<CR><CR>
+    if executable('rg')
+        map <c-a> :Rg<CR>
+        noremap <Leader>aw :Rg <C-R>=expand("<cword>")<CR><CR>
+        "Find c expression under cursor
+        noremap <Leader>af :Rg <C-R>=expand("<cexpr>")<CR><CR>
 
-else  " use ag
-
-    "------------------------------------------------------------------------------
-    " Ack.vim  --  use ag(aka silverserver if availble) else ack cmd
-    "----------------------- -------------------------------------------------------
-    if executable('ag')
-        "use silversearcher if available
-        let g:ackprg = 'ag --vimgrep'
-        cnoreabbrev Ack Ack!
-        map <c-a> :Ag<CR>
-        noremap <C-w> :Ag <C-R>=expand("<cword>")<CR><CR>
-        nnoremap <Leader>ac :Ack!<Space>
-        " Ack word under the cursor
-        noremap <Leader>aw :Ack! <C-R>=expand("<cword>")<CR><CR>
-        noremap <Leader>af :AckFile <space>
+    else  " use ag
+        if executable('ag')
+            " Ack word under the cursor
+            noremap <Leader>aw :Ag <C-R>=expand("<cword>")<CR><CR>
+            noremap <Leader>af :Ag <space>
+        endif
     endif
 endif
 
@@ -714,7 +731,11 @@ autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 let g:floaterm_keymap_toggle = '<F12>'
 let g:floaterm_width = 0.9
 let g:floaterm_height = 0.9
-
+let g:floaterm_wintype = 'float'
+" Set floaterm window's background to black
+hi Floaterm guibg=black
+" " Set floating window border line color to cyan, and background to orange
+hi FloatermBorder guibg=orange guifg=cyan
 "------------------------------------------------------------------------------
 "  CCTree database handling functions
 "------------------------------------------------------------------------------

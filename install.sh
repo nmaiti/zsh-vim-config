@@ -8,7 +8,7 @@
 # Args :
 #
 # Creation Date : 02-01-2021
-# Last Modified : 25-03-21 15:10:48S
+# Last Modified : 27-03-21 04:26:20S
 #
 # Created By : Nabendu
 # Email : 1206581+nmaiti@users.noreply.github.com
@@ -24,8 +24,8 @@ else
     #  Wsl version need update in dns resolution file
     if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
         echo "This is WSL modifying /etc/wsl.conf & /etc/resolv.conf"
-        echo $'[network]\ngenerateResolvConf = false' > /etc/wsl.conf
-        echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+        sudo echo $'[network]\ngenerateResolvConf = false' > /etc/wsl.conf
+        sudo echo "nameserver 8.8.8.8" >> /etc/resolv.conf
     else
         echo "This is not WSL"
     fi
@@ -41,7 +41,7 @@ else
         sudo add-apt-repository ppa:jonathonf/vim
         sudo apt-get update
         sudo apt-get install exuberant-ctags cscope git zsh clang-format \
-            fonts-powerline vim-gtk3 vim-nox -y
+            fonts-powerline vim-gtk3 -y
 
         if [[ $UBUNTU_CODE == "focal" ]] || [[ $DEBIAN_ID == '"10.5"' ]]; then
             sudo apt install fzf ripgrep -y
