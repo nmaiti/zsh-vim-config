@@ -6,7 +6,7 @@ A vim config to make a awesome IDE which is useful for code browsing and coding,
 
 Snapshot
 ========
-![vim_screenshoot.jpg](https://raw.githubusercontent.com/nmaiti/zsh-vim-config/master/vim_screenshoot.png)
+[![asciicast](https://asciinema.org/a/KC7U2hGb26BteVjdrnBCgNc38.svg)](https://asciinema.org/a/KC7U2hGb26BteVjdrnBCgNc38?autoplay=1&speed=2)
 
 Features
 ========
@@ -14,6 +14,9 @@ Features
  * Default colorschema is jay for vim
  * vim-syntax-extra is added for more granular vim syntax highlighting
  * Kept powerline to remove cursor lag in airline
+
+**To use vim8.2 and advanced popup window use [to_plug](https://github.com/nmaiti/zsh-vim-config/tree/to_plug)
+ branch**
 
 How to install:
 
