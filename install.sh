@@ -8,7 +8,7 @@
 # Args :
 #
 # Creation Date : 02-01-2021
-# Last Modified : 27-03-21 04:26:20S
+# Last Modified : 27-03-21 04:52:53S
 #
 # Created By : Nabendu
 # Email : 1206581+nmaiti@users.noreply.github.com
@@ -45,6 +45,11 @@ else
 
         if [[ $UBUNTU_CODE == "focal" ]] || [[ $DEBIAN_ID == '"10.5"' ]]; then
             sudo apt install fzf ripgrep -y
+            ##  TODO change as per the architechture
+            wget https://github.com/sharkdp/bat/releases/download/v0.18.0/bat_0.18.0_amd64.deb
+            sudo dpkg -i bat_0.18.0_amd64.deb
+            rm -rf bat_0.18.0_amd64.deb
+
         else
             git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
             ~/.fzf/install

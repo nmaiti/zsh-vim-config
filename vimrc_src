@@ -755,13 +755,20 @@ function! LoadCCTree()
     endif
 endfunc
 
-" C code header
+" C src code & header
 autocmd bufnewfile *.c so ~/.vim/headers/c_header.template
-autocmd bufnewfile *.c exe "1," . 15 . "g/File Name :.*/s//File Name : " .expand("%")
-autocmd bufnewfile *.c exe "1," . 15 . "g/Creation Date :.*/s//Creation Date : " .strftime("%d-%m-%y %H:%M:%S")
+autocmd bufnewfile *.c exe "1," . 12 . "g/File Name :.*/s//File Name : " .expand("%")
+autocmd bufnewfile *.c exe "1," . 12 . "g/Creation Date :.*/s//Creation Date : " .strftime("%d-%m-%y %H:%M:%S")
 autocmd Bufwritepre,filewritepre *.c execute "normal ma"
-autocmd Bufwritepre,filewritepre *.c exe "1," . 15 . "g/Last Modified :.*/s//Last Modified : " .strftime("%d-%m-%y %H:%M:%S")
+autocmd Bufwritepre,filewritepre *.c exe "1," . 12 . "g/Last Modified :.*/s//Last Modified : " .strftime("%d-%m-%y %H:%M:%S")
 autocmd bufwritepost,filewritepost *.c execute "normal `a"
+autocmd bufnewfile *. so ~/.vim/headers/c_header.template
+autocmd bufnewfile *.h exe "1," . 12 . "g/File Name :.*/s//File Name : " .expand("%")
+autocmd bufnewfile *.h exe "1," . 12 . "g/Creation Date :.*/s//Creation Date : " .strftime("%d-%m-%y %H:%M:%S")
+autocmd Bufwritepre,filewritepre *.h execute "normal ma"
+autocmd Bufwritepre,filewritepre *.h exe "1," . 12 . "g/Last Modified :.*/s//Last Modified : " .strftime("%d-%m-%y %H:%M:%S")
+autocmd bufwritepost,filewritepost *.h execute "normal `a"
+
 " Sh code header
 autocmd bufnewfile *.sh so ~/.vim/headers/sh_header.template
 autocmd bufnewfile *.sh exe "1," . 15 . "g/Script Name :.*/s//Script Name : " .expand("%")
