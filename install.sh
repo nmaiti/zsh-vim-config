@@ -3,12 +3,12 @@
 ###################################################################
 # Script Name : install.sh
 #
-# Description : zsh and vimrc installer
+# Description : zsh and vimrc installer.
 #
 # Args :
 #
 # Creation Date : 02-01-2021
-# Last Modified : 27-03-21 04:52:53S
+# Last Modified : 12-06-22 12:37:07S
 #
 # Created By : Nabendu
 # Email : 1206581+nmaiti@users.noreply.github.com
@@ -24,44 +24,47 @@ else
     #  Wsl version need update in dns resolution file
     if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
         echo "This is WSL modifying /etc/wsl.conf & /etc/resolv.conf"
-        sudo echo $'[network]\ngenerateResolvConf = false' > /etc/wsl.conf
-        sudo echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+	    echo '[network]\ngenerateResolvConf = false'| sudo tee -a /etc/wsl.conf
+	    echo "nameserver 8.8.8.8" | sudo tee -a /etc/resolv.conf
     else
         echo "This is not WSL"
     fi
 
     if [ $is_debian == 0 ]; then
         echo ' ******* Debian/Ubuntu detected **********'
-        UBUNTU_CODE=$(cat /etc/os-release | grep "UBUNTU_CODENAME" | cut -d'=' -f 2)
-        DEBIAN_ID=$(cat /etc/os-release | grep "VERSION_ID" | cut -d'=' -f 2)
-        echo $DEBIAN_ID
-        if [[ $DEBIAN_ID == '"10.5"' ]]; then
+        OS_NAME=$(cat /etc/os-release | grep "^NAME="| cut -d '=' -d '"' -f 2 )
+        VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID" | cut -d '=' -f 2|tr -d \. | bc)
+        echo $VERSION_ID
+        echo $OS_NAME
+        if [[ $VERSION_ID == '"10.5"' ]]; then
             sudo apt install software-properties-common
         fi
-        sudo add-apt-repository ppa:jonathonf/vim
         sudo apt-get update
         sudo apt-get install exuberant-ctags cscope git zsh clang-format \
-            fonts-powerline vim-gtk3 -y
+            fonts-powerline  -y
 
-        if [[ $UBUNTU_CODE == "focal" ]] || [[ $DEBIAN_ID == '"10.5"' ]]; then
-            sudo apt install fzf ripgrep -y
-            ##  TODO change as per the architechture
-            wget https://github.com/sharkdp/bat/releases/download/v0.18.0/bat_0.18.0_amd64.deb
-            sudo dpkg -i bat_0.18.0_amd64.deb
-            rm -rf bat_0.18.0_amd64.deb
-
+        if [[ $OS_NAME == "Ubuntu" ]] || [[ $OS_NAME == "Debian" ]] ; then
+            if [[ $VERSION_ID < $(echo "2204" | bc) ]] ; then
+                git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+                ~/.fzf/install
+                sudo add-apt-repository ppa:jonathonf/vim
+                sudo apt-get update
+                sudo apt install silversearcher-ag vim-gtk3 -y
+            else
+                sudo apt install fzf vim-gtk3 ripgrep -y
+                if [[ $(uname -m) == "x86_64" ]]; then
+                    ##  TODO change as per the architechture
+                    wget https://github.com/sharkdp/bat/releases/download/v0.21.0/bat_0.21.0_amd64.deb
+                    sudo dpkg -i bat_0.21.0_amd64.deb
+                    rm -rf bat_0.21.0_amd64.deb
+                fi
+            fi
         else
-            git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-            ~/.fzf/install
-            sudo apt install silversearcher-ag -y
+            echo ' ******* Redhat/Centos detected **********'
+            sudo yum install -y ctags
         fi
-
-    else
-        echo ' ******* Redhat/Centos detected **********'
-        sudo yum install -y ctags
     fi
 fi
-
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
@@ -74,7 +77,8 @@ fi
 if [[ ! -d ~/.zshrc ]];then
     cp $(pwd)/zshrc_src ~/.zshrc
     sed -i "s/XYZZ/$USER/g" ~/.zshrc
-    sudo chsh -s $(which zsh)
+    echo "exec zsh" >> ~/.bashrc
+#    sudo chsh -s $(which zsh)
 fi
 
 if [[ -e ~/.vimrc ]]; then
@@ -93,13 +97,13 @@ if [[ ! -d ~/.vimrc ]];then
     mkdir ~/.vim
     cp -rf $(pwd)/vim_src/headers ~/.vim/
 
-#    ln -s $(pwd)/vimrc_src ~/.vimrc
-#    ln -s $(pwd)/vim_src ~/.vim
-echo '#########################'
-echo 'install finished.'
-echo 'If you want to install vim-go, Please install golang first,'
-echo 'then running: go get -u github.com/jstemmer/gotags'
-exit 0
+   #    ln -s $(pwd)/vimrc_src ~/.vimrc
+   #    ln -s $(pwd)/vim_src ~/.vim
+   echo '#########################'
+   echo 'install finished.'
+   echo 'If you want to install vim-go, Please install golang first,'
+   echo 'then running: go get -u github.com/jstemmer/gotags'
+   exit 0
 else
     echo '~/vimrc does not exist'
     exit 0
