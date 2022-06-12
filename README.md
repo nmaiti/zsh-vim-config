@@ -28,6 +28,11 @@ How to install:
 
 done
 
+Supported Platforms
+========
+ * Linux (Ubuntu/Mint)
+ * MinGW
+
 Included Plugins
 ========
 

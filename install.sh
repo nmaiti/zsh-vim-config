@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ###################################################################
 # Script Name : install.sh
@@ -8,7 +8,7 @@
 # Args :
 #
 # Creation Date : 02-01-2021
-# Last Modified : 12-06-22 15:36:58S
+# Last Modified : 12-06-22 23:17:29S
 #
 # Created By : Nabendu
 # Email : 1206581+nmaiti@users.noreply.github.com
@@ -27,10 +27,10 @@ if [ $machine == 'Mac' ]; then
     echo ' ******* Mac detected ******* '
     brew install ctags
 elif [ $machine == 'MinGw' ]; then
-    hash cscope 2>/dev/null && hash ctags 2>/dev/null && clang-format fzf 2>/dev/null && hash bat 2>/dev/null && hash fzf 2>/dev/null && hash rg 2>/dev/null
+    hash cscope 2>/dev/null && hash ctags 2>/dev/null && hash clang-format 2>/dev/null && hash fzf 2>/dev/null && hash bat 2>/dev/null && hash fzf 2>/dev/null && hash rg 2>/dev/null
     if [[ $? -ne 0 ]];then
         echo ' Binaries are missing (cscope, ctags, clang-format, bat, ripgrep, fzf)'
-        echo ' Install Manually from LINK and start this script)'
+        echo ' Install Manually and start this script)'
         exit 0
     fi
 elif [ $machine == 'Linux' ]; then
@@ -85,17 +85,13 @@ else
     echo "This is not Known Machine type"
 fi
 
-
 if [ $machine != 'UNKNOWN' ]; then
 
-    if [[ -d ~/.oh-my-zsh ]]; then
+
+    if [ ! -d ~/.oh-my-zsh ]; then
 
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-        ZSH_CUSTOM='~/.oh-my-zsh/custom'
-        #    if [[ -e ~/.zshrc ]]; then
-        echo "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
-
-        git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+        git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
         if [[ -e ~/.zshrc ]]; then
             echo 'Backup zshrc to ~/.zshrc.bak'
@@ -105,9 +101,16 @@ if [ $machine != 'UNKNOWN' ]; then
         # install zshrc
         if [[ ! -d ~/.zshrc ]];then
             cp $(pwd)/zshrc_src ~/.zshrc
-            sed -i "s/XYZZ/$USER/g" ~/.zshrc
-            echo "exec zsh" >> ~/.bashrc
-            #    sudo chsh -s $(which zsh)
+            if [ $machine == 'MinGw' ]; then
+                sed -i "s/\/home\/XYZZ/~/g" ~/.zshrc
+            else
+                sed -i "s/XYZZ/$USER/g" ~/.zshrc
+            fi
+            cat ~/.bashrc | grep "exec zsh" >/dev/null
+            if [[ $? ]] ; then
+                echo "exec zsh" >> ~/.bashrc
+                #    sudo chsh -s $(which zsh)
+            fi
         fi
     fi
 
@@ -135,7 +138,7 @@ if [ $machine != 'UNKNOWN' ]; then
        echo 'then running: go get -u github.com/jstemmer/gotags'
        exit 0
    else
-       echo '~/vimrc does still present'
+       echo '~/vimrc still present'
        exit 0
     fi
 fi
