@@ -8,7 +8,7 @@
 # Args :
 #
 # Creation Date : 02-01-2021
-# Last Modified : 12-06-22 23:17:29S
+# Last Modified : 18-06-23 12:12:25S
 #
 # Created By : Nabendu
 # Email : 1206581+nmaiti@users.noreply.github.com
@@ -67,17 +67,13 @@ elif [ $machine == 'Linux' ]; then
                 sudo apt-get update
                 sudo apt install silversearcher-ag vim-gtk3 -y
             else
-                sudo apt install fzf vim-gtk3 ripgrep -y
-                if [[ $(uname -m) == "x86_64" ]]; then
-                    ##  TODO change as per the architechture
-                    wget https://github.com/sharkdp/bat/releases/download/v0.21.0/bat_0.21.0_amd64.deb
-                    sudo dpkg -i bat_0.21.0_amd64.deb
-                    rm -rf bat_0.21.0_amd64.deb
-                fi
+                sudo apt install fzf vim ripgrep bat -y
+                ##  TODO change as per the architechture
             fi
         else
             echo ' ******* Redhat/Centos detected **********'
             sudo yum install -y ctags
+            ##  TODO change as per the architechture
         fi
     fi
 else
@@ -93,6 +89,7 @@ if [ $machine != 'UNKNOWN' ]; then
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
         git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
+        echo "Oh my zsh Installed"
         if [[ -e ~/.zshrc ]]; then
             echo 'Backup zshrc to ~/.zshrc.bak'
             mv ~/.zshrc ~/.zshrc.bak
